@@ -89,10 +89,10 @@
 									<form:input path="email" type="email" class="form-control" required="true"/>
 									
 									Password
-									<form:input path="password" type="password" class="form-control" required="true"/>
+									<form:input path="password" type="password" value="" class="form-control" required="true"/>
 									
 									Password Confirm
-									<form:input path="passwordConfirmation" type="password"  class="form-control" required="true"/>
+									<form:input path="passwordConfirmation" value="" type="password"  class="form-control" required="true"/>
 									
 									<div class="mt-5 text-center">
 										<input type="submit" value="Registrar" class="btn btn-dark btn-block">

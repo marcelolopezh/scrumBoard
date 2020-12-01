@@ -1,5 +1,8 @@
 package com.marcelo.scrumBoard.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +22,10 @@ public class controller {
 	UserService userService;
 	
 	@GetMapping("/")
-	public String principal(@ModelAttribute("user") User user, HttpSession session) {
+	public String principal(@ModelAttribute("user") User user, HttpSession session, Model model) {
 		if(session.getAttribute("loggedUser")!=null) {
+			model.addAttribute("loggedUser", userService.findById((Long) session.getAttribute("loggedUser")));
+
 			return "plataforma/index.jsp";
 		}else {
 			return "login.jsp";
@@ -41,8 +46,14 @@ public class controller {
 	public String loginPost(@ModelAttribute("user") User user, Model model, HttpSession session) {
 		boolean isDataCorrect = userService.authenticateUser(user.getEmail(), user.getPassword());
 		User userLogged = userService.findByEmail(user.getEmail());
+		ArrayList<User> userList = new ArrayList<User>();
+		ArrayList<User> clientList = new ArrayList<User>();
+		userList.add(user);
+		clientList.add(user);
 		if(isDataCorrect) {
 			session.setAttribute("loggedUser", userLogged.getId());
+			session.setAttribute("userListSession", userList);
+			session.setAttribute("clientListSession", clientList);
 			return "plataforma/index.jsp";
 		}else {
 			boolean booleanError = true;
@@ -75,11 +86,11 @@ public class controller {
 				model.addAttribute("mensaje", "Las contraseñas no coinciden");
 				return "registro.jsp";
 			}else {
+				// IF PARA SABER SI EXISTE O NO OTRO USUARIO REGISTRADO CON EL MISMO CORREO
 				if(userService.findByEmail(user.getEmail())==null) {
-					userService.register(user);
-					model.addAttribute("booleanSuccess", true);
-					model.addAttribute("mensaje", "Registro exitoso");
-					return "registro.jsp";
+					User userRegistered = userService.register(user);
+					session.setAttribute("loggedUser", userRegistered.getId());
+					return "redirect:/";
 				}else {
 					model.addAttribute("booleanError", true);
 					model.addAttribute("mensaje", "El correo ya se encuentra registrado");
@@ -91,6 +102,7 @@ public class controller {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		if(session.getAttribute("loggedUser")!=null) {
+			session.setAttribute("loggedUser", null);
 			session.invalidate();
 		}
 		return "redirect:/";

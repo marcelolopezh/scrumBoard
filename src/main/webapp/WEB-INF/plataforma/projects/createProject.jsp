@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%> 
 <%@ page isErrorPage="true" %>   
 
+
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -16,6 +17,7 @@
     <!-- Favicon icon -->
     <title>ScrumBoard Taller de Integración</title>
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/style.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 
@@ -52,7 +54,7 @@
                     </ul>
                     <ul class="navbar-nav float-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <c:out value="${ loggedUser.name } ${ loggedUser.lastName }"/> <i class="ml-3 fas fa-user "></i></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <c:out value="${ loggedUser.name }"/> <c:out value="${ loggedUser.lastName }"/> <i class="fas fa-user "></i></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href=""><i class="fas fa-user"></i> Ver mi Perfil</a>
                                 <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i> Salir de la sesión</a>
@@ -72,7 +74,7 @@
                         <li class="p-15 m-t-10"><a href="javascript:void(0)" class="btn btn-block create-btn text-white no-block d-flex align-items-center"> <span class="hide-menu m-l-5">Opciones</span> </a></li>
                         <!-- User Profile-->
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/showProjects" aria-expanded="false"><i class="fas fa-list-ul"></i><span class="hide-menu">Proyectos</span></a></li>
-                       	<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/createProject" aria-expanded="false"><i class="fas fa-plus-square"></i><span class="hide-menu">Nuevo Proyecto</span></a></li>
+                       	<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/createProject" aria-expanded="false"><i class="fas fa-plus-square "></i><span class="hide-menu ">Nuevo Proyecto</span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -95,93 +97,53 @@
             </div>
 
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                            	<h3>Información Proyecto 1</h3>
-                                <canvas id="myChart" ></canvas>
-                                <script>
-                                function randomInt(min, max) {
-                                	return min + Math.floor((max - min) * Math.random());
-                                }
-                                total_dias = randomInt(10,20)
-                                array_dias = []
-								for(i=1;i<=total_dias;i++){
-									array_dias.push(i)
-								}
-                                
-                                total_horas = randomInt(60,70)
-                                horas_por_dia = total_horas/total_dias
-                                array_horas = []
-                                data = []
-                                for(i=1;i<=total_dias;i++){
-									array_horas.push(total_horas-(i*horas_por_dia))
-									data.push(randomInt(5,10))
-                                }
-                                
-                                new Chart(
-                                   document.getElementById("myChart"),{
-                                   "type":"line",
-                                   "data":{
-                                       "labels": array_dias,
-                                        "datasets":[{
-                                            "label":"Trabajo Estimado",
-                                            "data":array_horas,
-                                            "fill":false,
-                                            "borderColor":"rgb(75, 192, 192)",
-                                            "lineTension":0.1
-                                        },{
-                                            "label":"Trabajo Real",
-                                            "data":data,
-                                            "fill":false,
-                                            "borderColor":"rgb(255, 44, 44)",
-                                            "lineTension":0.1
-                                        }
-                                        ]
-                                    },
-                                   "options":{}
-                                   });
-								</script>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                            	<h3>Información Proyecto 2</h3>
-                                <canvas id="myChart2" ></canvas>
-                                <script>
-                                function randomInt(min, max) {
-                                	return min + Math.floor((max - min) * Math.random());
-                                }
-                                let data2 = [];
-                                for(i=0;i<14;i++){
-									data2.push(randomInt( 30, 50));
-                                }
-                                new Chart(
-                                   document.getElementById("myChart2"),{
-                                   "type":"line",
-                                   "data":{
-                                       "labels": ["January","February","March","April","May","June","July","January","February","March","April","May","June","July"],
-                                        "datasets":[{
-                                            "label":"My First Dataset",
-                                            "data":data2,
-                                            "fill":true,
-                                            "borderColor":"rgb(75, 192, 192)",
-                                            "lineTension":0.2
-                                        }]
-                                    },
-                                   "options":{}
-                                   });
-								</script>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
+	       		<form:form modelAttribute="project" id="dataForm" action="/createProject"  method="POST" class="card">
+	       			<div class="row">
+	       				<div class="col-md-12  mt-5">
+							<h3 class="text-center">Crear Proyecto</h3>
+	       				</div>
+	       			</div>
+       				<div class="row p-5 ">
+	                 	<div class="col-md-4">
+		                 	<h4 class="mt-5">Nombre</h4>
+			       			<form:input type="text" path="name" id="projectName" class="form-control" required="true"/>
+			       			<h4>Descripción</h4>
+			       			<form:textarea class="form-control" id="projectDescription" path="description" rows="3" required="true"/>
+	                 	</div>
+	                 	<div class="col-md-4">
+	                	 	<h3></h3>
+	                 		<h4 class="mt-5">Añadir Participantes</h4>
+	                 		<div class="d-inline">
+	                 			<input type="text" class="d-inline form-control" style="width:90%" placeholder="Email" name="searchUser" id="searchUser">
+	                 			<button type="button" id="searchUserButton" class="d-inline btn btn-success"><i class="fa fa-search" aria-hidden="true"></i></button>
+	                 		</div>
+	                 		
+	                 		<h3></h3>
+	                 		<h4 class="mt-5">Añadir Cliente</h4>
+	                 		<div class="d-inline">
+	                 			<input type="text" class="d-inline form-control" style="width:90%" placeholder="Email" name="searchClient" id="searchClientInput">
+	                 			<button type="button" id="searchClientButton" class="d-inline btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+	                 		</div>
+	                 	</div>
+	                 	<div class="col-md-4">
+	                 		<h3></h3>
+	                 		<h4 class="mt-5">Lista de Participantes</h4>
+	                 		<div class="participantList">
+	                 			
+	                 		</div>
+	                 		<h4 class="mt-5">Lista de Clientes</h4>
+	                 		<div class="clientList">
+	                 			
+	                 		</div>
+	                 	</div>
+	                </div>
+	                <div class="row">
+	                	<div class="col-12 text-center">
+	                		<button type="submit" class="btn btn-success" id="createProject">Crear Proyecto</button>
+	                	</div>
+	                </div>
+
+	       		</form:form>
             </div>
           
             <footer class="footer text-center">

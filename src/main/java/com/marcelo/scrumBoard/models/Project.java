@@ -46,6 +46,16 @@ public class Project {
 			)
 	private List<User> members;
 	
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "projects_clients",
+			joinColumns = @JoinColumn (name="project_id"),
+			inverseJoinColumns = @JoinColumn (name="user_id")
+			)
+	private List<User> clients;
+	
+	
 	public Project() {
 		
 	}
@@ -105,6 +115,12 @@ public class Project {
 	}
 	public void setMembers(List<User> members) {
 		this.members = members;
+	}
+	public List<User> getClients() {
+		return clients;
+	}
+	public void setClients(List<User> clients) {
+		this.clients = clients;
 	}
     
     

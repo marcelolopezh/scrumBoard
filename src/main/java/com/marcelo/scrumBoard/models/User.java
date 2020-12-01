@@ -48,10 +48,20 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     		name = "projects_members",
-    		joinColumns = @JoinColumn(name = "project_id"),
-    		inverseJoinColumns = @JoinColumn(name = "user_id")
+    		joinColumns = @JoinColumn(name = "user_id"),
+    		inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private List<Project> allProjects;
+    
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+    		name = "projects_clients",
+    		joinColumns = @JoinColumn(name = "user_id"),
+    		inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> allClientsProj;
+    
     
     public User() {
     	
@@ -130,6 +140,18 @@ public class User {
 	}
 	public void setAllProjects(List<Project> allProjects) {
 		this.allProjects = allProjects;
+	}
+	public List<Task> getTasks() {
+		return tasks;
+	}
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+	public List<Project> getAllClientsProj() {
+		return allClientsProj;
+	}
+	public void setAllClientsProj(List<Project> allClientsProj) {
+		this.allClientsProj = allClientsProj;
 	}
     
     
