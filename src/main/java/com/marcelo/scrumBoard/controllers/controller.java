@@ -25,7 +25,6 @@ public class controller {
 	public String principal(@ModelAttribute("user") User user, HttpSession session, Model model) {
 		if(session.getAttribute("loggedUser")!=null) {
 			model.addAttribute("loggedUser", userService.findById((Long) session.getAttribute("loggedUser")));
-
 			return "plataforma/index.jsp";
 		}else {
 			return "login.jsp";
@@ -51,7 +50,7 @@ public class controller {
 		userList.add(user);
 		clientList.add(user);
 		if(isDataCorrect) {
-			session.setAttribute("loggedUser", userLogged.getId());
+			session.setAttribute("loggedUser", userService.findByEmail(user.getEmail()));
 			session.setAttribute("userListSession", userList);
 			session.setAttribute("clientListSession", clientList);
 			return "plataforma/index.jsp";
