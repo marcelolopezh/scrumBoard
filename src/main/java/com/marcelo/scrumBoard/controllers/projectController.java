@@ -1,7 +1,6 @@
 package com.marcelo.scrumBoard.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,8 +8,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +31,8 @@ public class projectController {
 	ProjectService projectService;
 	
 	@GetMapping("/createProject")
-	public String principal(@ModelAttribute("user") User user, HttpSession session, @ModelAttribute("project") Project project, @ModelAttribute("map") HashMap<Long, Object> map) {
+	public String principal(HttpSession session, @ModelAttribute("project") Project project, Model model) {
 		if(session.getAttribute("loggedUser")!=null) {
-			//List<User> usuarios = userService.findAll();
-			//for(int i = 0; i<usuarios.size(); i++) {
-			//	map.put(usuarios.get(i).getId(),usuarios.get(i));
-			//}
 			System.out.println("HAS ENTRADO A CREAR PROYECTO");
 			// CODIGO PARA LIMPIAR LA VARIABLE DE SESION AL MOMENTO DE RECARGAR LA PAGINA POR ABC MOTIVO
 			Long id = (Long) session.getAttribute("loggedUser");
@@ -45,6 +42,8 @@ public class projectController {
 			clientListSession.add(userService.findById(id));
 			session.setAttribute("userListSession", userListSession);
 			session.setAttribute("clientListSession", clientListSession);
+			
+			model.addAttribute("loggedUser", userService.findById(id));
 			return "plataforma/projects/createProject.jsp";
 		}else {
 			return "login.jsp";
@@ -75,7 +74,7 @@ public class projectController {
 		project.setClients(clientListSession);
 		Long id = (Long) session.getAttribute("loggedUser");
 		project.setUser(userService.findById(id));
-		projectService.createProject(project);	
+		Project projectCreated = projectService.createProject(project);	
 		
 		// LIMPIANDO VARIABLES 
 		//userListSession.clear();
@@ -85,7 +84,7 @@ public class projectController {
 		
 		session.setAttribute("userListSession", userListSession);
 		session.setAttribute("clientListSession", clientListSession);
-		return "redirect:/createProject";
+		return "redirect:/showProject/" + projectCreated.getId() ;
 	}
 	
 	@RequestMapping(value = "/searchUser", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -156,5 +155,16 @@ public class projectController {
 		}		
 	}
 	
-	
+	/* METODOS PARA MOSTRAR PROYECTOS */
+	@GetMapping("/showProject/{id}")
+	public String showProject(@PathVariable("id") Long id, Model model) {
+		Project project = projectService.findById(id);
+		if(project==null) {
+			return "plataforma/404.jsp";
+		}else {
+			model.addAttribute(project);
+			return "plataforma/projects/showProject.jsp";
+		}
+		
+	}
 }

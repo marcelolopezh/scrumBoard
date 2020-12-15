@@ -1,5 +1,6 @@
 package com.marcelo.scrumBoard.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +18,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="projects")
-public class Project {
+public class Project implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -33,9 +36,11 @@ public class Project {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 	
 	@OneToMany(mappedBy="project", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private List<Sprint> sprints;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -44,6 +49,7 @@ public class Project {
 			joinColumns = @JoinColumn (name="project_id"),
 			inverseJoinColumns = @JoinColumn (name="user_id")
 			)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private List<User> members;
 	
 	
@@ -53,6 +59,7 @@ public class Project {
 			joinColumns = @JoinColumn (name="project_id"),
 			inverseJoinColumns = @JoinColumn (name="user_id")
 			)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private List<User> clients;
 	
 	

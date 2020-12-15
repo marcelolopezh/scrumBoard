@@ -1,5 +1,6 @@
 package com.marcelo.scrumBoard.controllers;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.marcelo.scrumBoard.models.User;
 import com.marcelo.scrumBoard.services.UserService;
 
@@ -50,7 +54,7 @@ public class controller {
 		userList.add(user);
 		clientList.add(user);
 		if(isDataCorrect) {
-			session.setAttribute("loggedUser", userService.findByEmail(user.getEmail()));
+			session.setAttribute("loggedUser", user);
 			session.setAttribute("userListSession", userList);
 			session.setAttribute("clientListSession", clientList);
 			return "plataforma/index.jsp";
@@ -106,4 +110,5 @@ public class controller {
 		}
 		return "redirect:/";
 	}
+
 }

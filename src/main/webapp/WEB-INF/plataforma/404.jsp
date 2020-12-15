@@ -96,100 +96,17 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                            	<h3>Información Proyecto 1</h3>
-                                <canvas id="myChart" ></canvas>
-                                <script>
-                                
-                                async function getDataRandom(name) {
-                                  let response = await fetch('/getDataRandom');
-                                  let data = await response.json()
-                                  console.log(data);
-                                } 
-                                
-                                getDataRandom();
-                                
-                                function randomInt(min, max) {
-                                	return min + Math.floor((max - min) * Math.random());
-                                }
-                                total_dias = randomInt(10,20)
-                                array_dias = []
-								for(i=1;i<=total_dias;i++){
-									array_dias.push(i)
-								}
-                                
-                                total_horas = randomInt(60,70)
-                                horas_por_dia = total_horas/total_dias
-                                array_horas = []
-                                data = []
-                                for(i=1;i<=total_dias;i++){
-									array_horas.push(total_horas-(i*horas_por_dia))
-									data.push(total_horas-(i*randomInt(2,4)))
-                                }
-                                
-                                new Chart(
-                                   document.getElementById("myChart"),{
-                                   "type":"line",
-                                   "data":{
-                                       "labels": array_dias,
-                                        "datasets":[{
-                                            "label":"Trabajo Estimado",
-                                            "data":array_horas,
-                                            "fill":false,
-                                            "borderColor":"rgb(75, 192, 192)",
-                                            "lineTension":0.1
-                                        },{
-                                            "label":"Trabajo Real",
-                                            "data":data,
-                                            "fill":false,
-                                            "borderColor":"rgb(255, 44, 44)",
-                                            "lineTension":0.1
-                                        }
-                                        ]
-                                    },
-                                   "options":{}
-                                   });
-								</script>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                            	<h3>Información Proyecto 2</h3>
-                                <canvas id="myChart2" ></canvas>
-                                <script>
-                                function randomInt(min, max) {
-                                	return min + Math.floor((max - min) * Math.random());
-                                }
-                                let data2 = [];
-                                for(i=0;i<14;i++){
-									data2.push(randomInt( 30, 50));
-                                }
-                                new Chart(
-                                   document.getElementById("myChart2"),{
-                                   "type":"line",
-                                   "data":{
-                                       "labels": ["January","February","March","April","May","June","July","January","February","March","April","May","June","July"],
-                                        "datasets":[{
-                                            "label":"My First Dataset",
-                                            "data":data2,
-                                            "fill":true,
-                                            "borderColor":"rgb(75, 192, 192)",
-                                            "lineTension":0.2
-                                        }]
-                                    },
-                                   "options":{}
-                                   });
-								</script>
-                            </div>
-                            
-                        </div>
-                    </div>
+                  	<div class="container-fluid">
+		                <div class="row">
+		                    <div class="col-md-12 mt-5 text-center">
+		                    	<div class="card">
+		                    		<div class="card-body">	
+		                    			<h1> <i class="fas fa-bug"></i> No hemos podido encontrar la información solicitada </h1>
+		                    		</div>
+		                    	</div>	                    
+		                    </div>
+		                </div>
+		            </div>
                 </div>
             </div>
           

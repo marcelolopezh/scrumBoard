@@ -18,6 +18,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -31,14 +32,18 @@ public class User {
     private String email;    
     private String accountType;
     @Size(min = 8, max = 200)
+    @JsonIgnore
     private String password;
     @Transient
+    @JsonIgnore
     private String passwordConfirmation;
     
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Project> projects;
    
     @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+    @JsonIgnore
     private List<Task> tasks;
     
     @Column(updatable=false)
@@ -51,6 +56,7 @@ public class User {
     		joinColumns = @JoinColumn(name = "user_id"),
     		inverseJoinColumns = @JoinColumn(name = "project_id")
     )
+    @JsonIgnore
     private List<Project> allProjects;
     
     
@@ -60,6 +66,7 @@ public class User {
     		joinColumns = @JoinColumn(name = "user_id"),
     		inverseJoinColumns = @JoinColumn(name = "project_id")
     )
+    @JsonIgnore
     private List<Project> allClientsProj;
     
     
