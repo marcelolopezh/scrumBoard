@@ -157,11 +157,14 @@ public class projectController {
 	
 	/* METODOS PARA MOSTRAR PROYECTOS */
 	@GetMapping("/showProject/{id}")
-	public String showProject(@PathVariable("id") Long id, Model model) {
+	public String showProject(@PathVariable("id") Long id, Model model, HttpSession session) {
 		Project project = projectService.findById(id);
 		if(project==null) {
 			return "plataforma/404.jsp";
 		}else {
+			Long idLoggedUser = (Long) session.getAttribute("loggedUser");
+			User loggedUser = userService.findById(idLoggedUser);
+			model.addAttribute("loggedUser", loggedUser);
 			model.addAttribute(project);
 			return "plataforma/projects/showProject.jsp";
 		}
